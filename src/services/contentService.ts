@@ -34,8 +34,7 @@ class ContentEcosystemService {
   ): Promise<GeneratedContent> {
     await delay(2000); // Simulate LLM generation time
 
-    const trend = mockTrends.find((t) => t.id === trendId);
-    const trendName = trend?.name || "Skincare";
+    // (intentional) no-op: generation is template-driven for mock data
 
     // Generate content based on specific trend
     const contentTemplates: Record<string, any> = {

@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from "react";
-import {
-  CheckCircle,
-  XCircle,
-  Edit3,
-  Eye,
-  Clock,
-  TrendingUp,
-  Shield,
-} from "lucide-react";
+import { CheckCircle, XCircle, Edit3, Eye, Clock, Shield } from "lucide-react";
+import Confetti from "./Confetti";
 import { GeneratedContent, TrustScore } from "../types";
 import { contentService } from "../services/contentService";
 
@@ -18,6 +11,8 @@ const ReviewQueue: React.FC = () => {
     useState<GeneratedContent | null>(null);
   const [trustScore, setTrustScore] = useState<TrustScore | null>(null);
   const [reviewNotes, setReviewNotes] = useState("");
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [approvedMessage, setApprovedMessage] = useState<string | null>(null);
   const [filter, setFilter] = useState<"all" | "pending" | "approved">(
     "pending"
   );
@@ -49,10 +44,27 @@ const ReviewQueue: React.FC = () => {
 
   const handleApprove = async (contentId: string) => {
     try {
-      await contentService.approveContent(contentId, reviewNotes);
-      await loadContent();
-      setSelectedContent(null);
+      const approved = await contentService.approveContent(
+        contentId,
+        reviewNotes
+      );
+      // update modal content status to approved so user sees it immediately
+      setSelectedContent((prev) =>
+        prev
+          ? { ...prev, status: "approved", approvedAt: approved.approvedAt }
+          : prev
+      );
+      setApprovedMessage("Content Approved & Published");
+      setShowConfetti(true);
       setReviewNotes("");
+
+      // keep confetti visible briefly then refresh list and close modal
+      setTimeout(async () => {
+        setShowConfetti(false);
+        setApprovedMessage(null);
+        await loadContent();
+        setSelectedContent(null);
+      }, 1400);
     } catch (error) {
       console.error("Failed to approve content:", error);
     }
@@ -103,6 +115,7 @@ const ReviewQueue: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {showConfetti && <Confetti />}
       {/* Header */}
       <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
         <div className="flex items-center justify-between">
@@ -247,6 +260,13 @@ const ReviewQueue: React.FC = () => {
             className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto p-8 my-8"
             onClick={(e) => e.stopPropagation()}
           >
+            {approvedMessage && (
+              <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg text-center">
+                <div className="text-green-800 font-semibold">
+                  {approvedMessage}
+                </div>
+              </div>
+            )}
             <div className="flex items-start justify-between mb-6">
               <div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">

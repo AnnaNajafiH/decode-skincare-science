@@ -101,3 +101,46 @@ body {
   font-weight: 600;
   font-size: 12px;
 }
+
+/* Header animated gradient */
+@keyframes header-gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animated-header {
+  background: linear-gradient(90deg, #eef2ff 0%, #e0f2fe 50%, #fff7ed 100%);
+  background-size: 200% 200%;
+  animation: header-gradient 8s ease infinite;
+}
+
+/* Confetti pieces */
+@keyframes confetti-fall {
+  to {
+    transform: translateY(110vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+@keyframes confetti-spin {
+  to {
+    transform: rotate(1080deg);
+  }
+}
+
+.confetti-root {
+  pointer-events: none;
+}
+.confetti-piece {
+  position: absolute;
+  top: -10vh;
+  will-change: transform, opacity;
+  border-radius: 2px;
+}

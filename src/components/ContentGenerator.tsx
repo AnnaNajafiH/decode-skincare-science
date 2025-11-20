@@ -11,6 +11,7 @@ import {
 import { Trend, GeneratedContent } from "../types";
 import { contentService } from "../services/contentService";
 import InstagramPost from "./InstagramPost";
+import Confetti from "./Confetti";
 
 type ContentGeneratorProps = {
   preselectedTrendId?: string;
@@ -28,6 +29,7 @@ const ContentGenerator: React.FC<ContentGeneratorProps> = ({
   const [showPreview, setShowPreview] = useState(false);
   const [sending, setSending] = useState(false);
   const [sendSuccess, setSendSuccess] = useState<string | null>(null);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   useEffect(() => {
     loadTrends();
@@ -67,6 +69,9 @@ const ContentGenerator: React.FC<ContentGeneratorProps> = ({
         contentType
       );
       setGeneratedContent(content);
+      // small celebration when generation finishes
+      setShowConfetti(true);
+      setTimeout(() => setShowConfetti(false), 1600);
     } catch (error) {
       console.error("Generation failed:", error);
     } finally {
@@ -84,6 +89,8 @@ const ContentGenerator: React.FC<ContentGeneratorProps> = ({
 
   return (
     <div className="space-y-6">
+      {/* Celebration confetti */}
+      {showConfetti && <Confetti />}
       {/* Header */}
       <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
         <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2 mb-2">
@@ -313,6 +320,9 @@ const ContentGenerator: React.FC<ContentGeneratorProps> = ({
                           generatedContent
                         );
                         setSendSuccess(submitted.id);
+                        // celebration on successful send
+                        setShowConfetti(true);
+                        setTimeout(() => setShowConfetti(false), 1600);
                       } catch (err) {
                         console.error("Failed to send to review:", err);
                         setSendSuccess(null);
@@ -351,6 +361,11 @@ const ContentGenerator: React.FC<ContentGeneratorProps> = ({
                     )}
                   </button>
                 </div>
+                {sendSuccess && (
+                  <div className="mt-3 text-sm text-green-600 font-medium">
+                    Sent to review (id: {sendSuccess})
+                  </div>
+                )}
               </div>
             </div>
           )}
