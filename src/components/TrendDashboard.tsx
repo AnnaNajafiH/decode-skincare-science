@@ -3,7 +3,11 @@ import { TrendingUp, Flame, ArrowUp, Clock, Hash, Eye } from "lucide-react";
 import { Trend } from "../types";
 import { contentService } from "../services/contentService";
 
-const TrendDashboard: React.FC = () => {
+type TrendDashboardProps = {
+  onCreatePost?: (trendId: string) => void;
+};
+
+const TrendDashboard: React.FC<TrendDashboardProps> = ({ onCreatePost }) => {
   const [trends, setTrends] = useState<Trend[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedTrend, setSelectedTrend] = useState<Trend | null>(null);
@@ -158,10 +162,59 @@ const TrendDashboard: React.FC = () => {
               <span className="text-xs text-gray-500">
                 {trend.relatedPosts.length} related posts
               </span>
-              <button className="text-xs text-beiersdorf-blue font-medium hover:underline flex items-center gap-1">
-                <Eye className="w-3 h-3" />
-                View Details
-              </button>
+              <div className="flex items-center gap-3">
+                {/* Determine urgency: hot velocity or very high score */}
+                {(() => {
+                  const isHot = trend.velocity === "hot" || trend.score >= 85;
+                  const baseBtn = isHot
+                    ? "text-xs text-white px-3 py-1 rounded-md font-bold shadow-lg transform-gpu hover:scale-105 transition"
+                    : "text-xs bg-beiersdorf-blue text-white px-3 py-1 rounded-md font-medium hover:bg-beiersdorf-navy transition";
+                  const hotBg = isHot
+                    ? "bg-gradient-to-r from-red-600 to-orange-500 pulse-glow-hot"
+                    : "bg-beiersdorf-blue";
+                  return (
+                    <>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onCreatePost && onCreatePost(trend.id);
+                        }}
+                        className={`${baseBtn} ${hotBg}`}
+                        aria-label={
+                          isHot
+                            ? `Create post urgently for ${trend.name}`
+                            : `Create post for ${trend.name}`
+                        }
+                      >
+                        {isHot ? (
+                          <span className="flex items-center gap-2">
+                            <span>Act Now</span>
+                          </span>
+                        ) : (
+                          <span>Create Post</span>
+                        )}
+                      </button>
+
+                      {isHot && (
+                        <span className="urgent-badge bg-red-50 text-red-700">
+                          🔥 High priority
+                        </span>
+                      )}
+
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedTrend(trend);
+                        }}
+                        className="text-xs text-beiersdorf-blue font-medium hover:underline flex items-center gap-1"
+                      >
+                        <Eye className="w-3 h-3" />
+                        View Details
+                      </button>
+                    </>
+                  );
+                })()}
+              </div>
             </div>
           </div>
         ))}

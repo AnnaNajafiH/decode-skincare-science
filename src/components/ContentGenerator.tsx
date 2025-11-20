@@ -12,7 +12,13 @@ import { Trend, GeneratedContent } from "../types";
 import { contentService } from "../services/contentService";
 import InstagramPost from "./InstagramPost";
 
-const ContentGenerator: React.FC = () => {
+type ContentGeneratorProps = {
+  preselectedTrendId?: string;
+};
+
+const ContentGenerator: React.FC<ContentGeneratorProps> = ({
+  preselectedTrendId,
+}) => {
   const [trends, setTrends] = useState<Trend[]>([]);
   const [selectedTrend, setSelectedTrend] = useState<string>("");
   const [contentType, setContentType] = useState<string>("instagram-carousel");
@@ -20,16 +26,30 @@ const ContentGenerator: React.FC = () => {
   const [generatedContent, setGeneratedContent] =
     useState<GeneratedContent | null>(null);
   const [showPreview, setShowPreview] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [sendSuccess, setSendSuccess] = useState<string | null>(null);
 
   useEffect(() => {
     loadTrends();
   }, []);
 
+  // When parent sets a preselected trend (e.g. from the TrendDashboard), pick it
+  useEffect(() => {
+    if (preselectedTrendId) {
+      setSelectedTrend(preselectedTrendId);
+    }
+  }, [preselectedTrendId]);
+
   const loadTrends = async () => {
     try {
       const data = await contentService.getTrends();
       setTrends(data);
-      if (data.length > 0) setSelectedTrend(data[0].id);
+      // Prefer preselectedTrendId if provided, otherwise default to first
+      if (preselectedTrendId) {
+        const found = data.find((t) => t.id === preselectedTrendId);
+        if (found) setSelectedTrend(preselectedTrendId);
+        else if (data.length > 0) setSelectedTrend(data[0].id);
+      } else if (data.length > 0) setSelectedTrend(data[0].id);
     } catch (error) {
       console.error("Failed to load trends:", error);
     }
@@ -276,15 +296,59 @@ const ContentGenerator: React.FC = () => {
                   📚 R&D References: {generatedContent.rdReferences.join(", ")}
                 </p>
                 <div className="flex gap-3">
-                  <button 
+                  <button
                     onClick={() => setShowPreview(true)}
                     className="flex-1 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-medium flex items-center justify-center gap-2"
                   >
                     <Eye className="w-5 h-5" />
                     Preview as Instagram Post
                   </button>
-                  <button className="flex-1 py-3 bg-beiersdorf-blue text-white rounded-lg hover:bg-beiersdorf-navy transition font-medium">
-                    Send to Review Queue
+                  <button
+                    onClick={async () => {
+                      if (!generatedContent) return;
+                      setSending(true);
+                      setSendSuccess(null);
+                      try {
+                        const submitted = await contentService.submitForReview(
+                          generatedContent
+                        );
+                        setSendSuccess(submitted.id);
+                      } catch (err) {
+                        console.error("Failed to send to review:", err);
+                        setSendSuccess(null);
+                      } finally {
+                        setSending(false);
+                      }
+                    }}
+                    disabled={sending || !generatedContent}
+                    className="flex-1 py-3 bg-beiersdorf-blue text-white rounded-lg hover:bg-beiersdorf-navy transition font-medium disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  >
+                    {sending ? (
+                      <>
+                        <svg
+                          className="animate-spin w-4 h-4 text-white"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                            fill="none"
+                          />
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                          />
+                        </svg>
+                        Sending...
+                      </>
+                    ) : (
+                      "Send to Review Queue"
+                    )}
                   </button>
                 </div>
               </div>
@@ -295,15 +359,15 @@ const ContentGenerator: React.FC = () => {
 
       {/* Instagram Preview Modal */}
       {showPreview && generatedContent && generatedContent.slides && (
-        <div 
+        <div
           className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50 overflow-y-auto"
           onClick={() => setShowPreview(false)}
         >
-          <div 
+          <div
             className="relative max-w-lg w-full my-8"
             onClick={(e) => e.stopPropagation()}
           >
-            <button 
+            <button
               onClick={() => setShowPreview(false)}
               className="absolute -top-10 right-0 text-white text-2xl hover:text-gray-300"
             >
@@ -311,9 +375,9 @@ const ContentGenerator: React.FC = () => {
             </button>
             <InstagramPost
               username="@beiersdorf_official"
-              slides={generatedContent.slides.map(slide => ({
+              slides={generatedContent.slides.map((slide) => ({
                 text: slide.text,
-                visualHint: slide.visualHint
+                visualHint: slide.visualHint,
               }))}
               caption={generatedContent.caption || ""}
               hashtags={generatedContent.hashtags || []}

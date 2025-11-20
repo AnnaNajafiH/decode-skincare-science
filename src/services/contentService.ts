@@ -182,8 +182,7 @@ class ContentEcosystemService {
       },
     };
 
-    const template =
-      contentTemplates[trendId] || contentTemplates.t1;
+    const template = contentTemplates[trendId] || contentTemplates.t1;
 
     const newContent: GeneratedContent = {
       id: `gc${Date.now()}`,
@@ -246,6 +245,20 @@ class ContentEcosystemService {
     if (!content) throw new Error("Content not found");
 
     return { ...content, ...updates };
+  }
+
+  // Submit generated content into the review queue (mock)
+  async submitForReview(content: GeneratedContent): Promise<GeneratedContent> {
+    await delay(500);
+    const toSubmit = {
+      ...content,
+      id: content.id || `gc${Date.now()}`,
+      status: content.status || "pending",
+      generatedAt: content.generatedAt || new Date().toISOString(),
+    };
+    // push into mock storage
+    mockGeneratedContent.unshift(toSubmit);
+    return toSubmit;
   }
 
   // Trust & Fact Checking

@@ -1,5 +1,11 @@
-import React from 'react';
-import { Heart, MessageCircle, Send, Bookmark, MoreHorizontal } from 'lucide-react';
+import React from "react";
+import {
+  Heart,
+  MessageCircle,
+  Send,
+  Bookmark,
+  MoreHorizontal,
+} from "lucide-react";
 
 interface InstagramPostProps {
   username: string;
@@ -16,13 +22,13 @@ interface InstagramPostProps {
 }
 
 const InstagramPost: React.FC<InstagramPostProps> = ({
-  username = '@beiersdorf',
+  username = "@beiersdorf",
   avatar,
   slides,
   caption,
   hashtags,
   likes = 0,
-  timeAgo = '2m'
+  timeAgo = "2m",
 }) => {
   const [currentSlide, setCurrentSlide] = React.useState(0);
   const [liked, setLiked] = React.useState(false);
@@ -37,13 +43,17 @@ const InstagramPost: React.FC<InstagramPostProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-lg border border-gray-200 max-w-md mx-auto overflow-hidden">
+    <div className="bg-white rounded-xl shadow-lg border border-gray-200 max-w-md mx-auto m-6 overflow-hidden">
       {/* Instagram Header */}
       <div className="flex items-center justify-between p-3 border-b border-gray-200">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
             {avatar ? (
-              <img src={avatar} alt={username} className="w-full h-full rounded-full" />
+              <img
+                src={avatar}
+                alt={username}
+                className="w-full h-full rounded-full"
+              />
             ) : (
               <span className="text-white font-bold text-sm">B</span>
             )}
@@ -96,7 +106,7 @@ const InstagramPost: React.FC<InstagramPostProps> = ({
             <div
               key={idx}
               className={`h-1 rounded-full transition-all ${
-                idx === currentSlide ? 'w-8 bg-white' : 'w-1 bg-white/50'
+                idx === currentSlide ? "w-8 bg-white" : "w-1 bg-white/50"
               }`}
             />
           ))}
@@ -114,9 +124,11 @@ const InstagramPost: React.FC<InstagramPostProps> = ({
           <div className="flex items-center gap-4">
             <button
               onClick={() => setLiked(!liked)}
-              className={`transition ${liked ? 'text-red-500' : 'text-gray-900'}`}
+              className={`transition ${
+                liked ? "text-red-500" : "text-gray-900"
+              }`}
             >
-              <Heart className={`w-7 h-7 ${liked ? 'fill-current' : ''}`} />
+              <Heart className={`w-7 h-7 ${liked ? "fill-current" : ""}`} />
             </button>
             <button className="text-gray-900">
               <MessageCircle className="w-7 h-7" />
@@ -127,9 +139,11 @@ const InstagramPost: React.FC<InstagramPostProps> = ({
           </div>
           <button
             onClick={() => setSaved(!saved)}
-            className={`transition ${saved ? 'text-gray-900' : 'text-gray-900'}`}
+            className={`transition ${
+              saved ? "text-gray-900" : "text-gray-900"
+            }`}
           >
-            <Bookmark className={`w-6 h-6 ${saved ? 'fill-current' : ''}`} />
+            <Bookmark className={`w-6 h-6 ${saved ? "fill-current" : ""}`} />
           </button>
         </div>
 
@@ -140,14 +154,17 @@ const InstagramPost: React.FC<InstagramPostProps> = ({
 
         {/* Caption */}
         <div className="text-sm">
-          <span className="font-semibold">{username}</span>{' '}
+          <span className="font-semibold">{username}</span>{" "}
           <span>{caption}</span>
         </div>
 
         {/* Hashtags */}
         <div className="flex flex-wrap gap-1">
           {hashtags.map((tag) => (
-            <span key={tag} className="text-sm text-blue-600 hover:underline cursor-pointer">
+            <span
+              key={tag}
+              className="text-sm text-blue-600 hover:underline cursor-pointer"
+            >
               #{tag}
             </span>
           ))}
