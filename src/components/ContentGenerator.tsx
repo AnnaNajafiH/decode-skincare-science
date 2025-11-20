@@ -6,9 +6,11 @@ import {
   FileVideo,
   Loader2,
   CheckCircle,
+  Eye,
 } from "lucide-react";
 import { Trend, GeneratedContent } from "../types";
 import { contentService } from "../services/contentService";
+import InstagramPost from "./InstagramPost";
 
 const ContentGenerator: React.FC = () => {
   const [trends, setTrends] = useState<Trend[]>([]);
@@ -17,6 +19,7 @@ const ContentGenerator: React.FC = () => {
   const [generating, setGenerating] = useState(false);
   const [generatedContent, setGeneratedContent] =
     useState<GeneratedContent | null>(null);
+  const [showPreview, setShowPreview] = useState(false);
 
   useEffect(() => {
     loadTrends();
@@ -269,17 +272,57 @@ const ContentGenerator: React.FC = () => {
               )}
 
               <div className="pt-4 border-t border-gray-200">
-                <p className="text-xs text-gray-500 mb-2">
+                <p className="text-xs text-gray-500 mb-3">
                   📚 R&D References: {generatedContent.rdReferences.join(", ")}
                 </p>
-                <button className="w-full py-3 bg-beiersdorf-blue text-white rounded-lg hover:bg-beiersdorf-navy transition font-medium">
-                  Send to Review Queue
-                </button>
+                <div className="flex gap-3">
+                  <button 
+                    onClick={() => setShowPreview(true)}
+                    className="flex-1 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-medium flex items-center justify-center gap-2"
+                  >
+                    <Eye className="w-5 h-5" />
+                    Preview as Instagram Post
+                  </button>
+                  <button className="flex-1 py-3 bg-beiersdorf-blue text-white rounded-lg hover:bg-beiersdorf-navy transition font-medium">
+                    Send to Review Queue
+                  </button>
+                </div>
               </div>
             </div>
           )}
         </div>
       </div>
+
+      {/* Instagram Preview Modal */}
+      {showPreview && generatedContent && generatedContent.slides && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50 overflow-y-auto"
+          onClick={() => setShowPreview(false)}
+        >
+          <div 
+            className="relative max-w-lg w-full my-8"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button 
+              onClick={() => setShowPreview(false)}
+              className="absolute -top-10 right-0 text-white text-2xl hover:text-gray-300"
+            >
+              ✕ Close Preview
+            </button>
+            <InstagramPost
+              username="@beiersdorf_official"
+              slides={generatedContent.slides.map(slide => ({
+                text: slide.text,
+                visualHint: slide.visualHint
+              }))}
+              caption={generatedContent.caption || ""}
+              hashtags={generatedContent.hashtags || []}
+              likes={2847}
+              timeAgo="Just now"
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

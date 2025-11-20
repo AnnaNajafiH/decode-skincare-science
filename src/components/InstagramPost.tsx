@@ -1,0 +1,163 @@
+import React from 'react';
+import { Heart, MessageCircle, Send, Bookmark, MoreHorizontal } from 'lucide-react';
+
+interface InstagramPostProps {
+  username: string;
+  avatar?: string;
+  slides: Array<{
+    text: string;
+    visualHint: string;
+    backgroundColor?: string;
+  }>;
+  caption: string;
+  hashtags: string[];
+  likes?: number;
+  timeAgo?: string;
+}
+
+const InstagramPost: React.FC<InstagramPostProps> = ({
+  username = '@beiersdorf',
+  avatar,
+  slides,
+  caption,
+  hashtags,
+  likes = 0,
+  timeAgo = '2m'
+}) => {
+  const [currentSlide, setCurrentSlide] = React.useState(0);
+  const [liked, setLiked] = React.useState(false);
+  const [saved, setSaved] = React.useState(false);
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  };
+
+  return (
+    <div className="bg-white rounded-xl shadow-lg border border-gray-200 max-w-md mx-auto overflow-hidden">
+      {/* Instagram Header */}
+      <div className="flex items-center justify-between p-3 border-b border-gray-200">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
+            {avatar ? (
+              <img src={avatar} alt={username} className="w-full h-full rounded-full" />
+            ) : (
+              <span className="text-white font-bold text-sm">B</span>
+            )}
+          </div>
+          <div>
+            <p className="font-semibold text-sm">{username}</p>
+            <p className="text-xs text-gray-500">Science-backed skincare</p>
+          </div>
+        </div>
+        <button className="text-gray-600 hover:text-gray-900">
+          <MoreHorizontal className="w-5 h-5" />
+        </button>
+      </div>
+
+      {/* Carousel */}
+      <div className="relative bg-gradient-to-br from-purple-100 via-blue-100 to-pink-100 aspect-square">
+        {/* Slide Content */}
+        <div className="absolute inset-0 flex items-center justify-center p-8">
+          <div className="text-center space-y-4">
+            <div className="text-3xl font-bold text-gray-900 leading-tight">
+              {slides[currentSlide]?.text}
+            </div>
+            <div className="text-sm text-gray-600 italic">
+              💡 {slides[currentSlide]?.visualHint}
+            </div>
+          </div>
+        </div>
+
+        {/* Navigation Arrows */}
+        {slides.length > 1 && (
+          <>
+            <button
+              onClick={prevSlide}
+              className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 hover:bg-white rounded-full flex items-center justify-center shadow-md"
+            >
+              ‹
+            </button>
+            <button
+              onClick={nextSlide}
+              className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 hover:bg-white rounded-full flex items-center justify-center shadow-md"
+            >
+              ›
+            </button>
+          </>
+        )}
+
+        {/* Slide Indicators */}
+        <div className="absolute top-2 left-0 right-0 flex justify-center gap-1">
+          {slides.map((_, idx) => (
+            <div
+              key={idx}
+              className={`h-1 rounded-full transition-all ${
+                idx === currentSlide ? 'w-8 bg-white' : 'w-1 bg-white/50'
+              }`}
+            />
+          ))}
+        </div>
+
+        {/* Slide Counter */}
+        <div className="absolute bottom-2 right-2 px-2 py-1 bg-black/50 text-white text-xs rounded-full">
+          {currentSlide + 1}/{slides.length}
+        </div>
+      </div>
+
+      {/* Instagram Actions */}
+      <div className="p-3 space-y-2">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => setLiked(!liked)}
+              className={`transition ${liked ? 'text-red-500' : 'text-gray-900'}`}
+            >
+              <Heart className={`w-7 h-7 ${liked ? 'fill-current' : ''}`} />
+            </button>
+            <button className="text-gray-900">
+              <MessageCircle className="w-7 h-7" />
+            </button>
+            <button className="text-gray-900">
+              <Send className="w-7 h-7" />
+            </button>
+          </div>
+          <button
+            onClick={() => setSaved(!saved)}
+            className={`transition ${saved ? 'text-gray-900' : 'text-gray-900'}`}
+          >
+            <Bookmark className={`w-6 h-6 ${saved ? 'fill-current' : ''}`} />
+          </button>
+        </div>
+
+        {/* Likes */}
+        <div className="font-semibold text-sm">
+          {(likes + (liked ? 1 : 0)).toLocaleString()} likes
+        </div>
+
+        {/* Caption */}
+        <div className="text-sm">
+          <span className="font-semibold">{username}</span>{' '}
+          <span>{caption}</span>
+        </div>
+
+        {/* Hashtags */}
+        <div className="flex flex-wrap gap-1">
+          {hashtags.map((tag) => (
+            <span key={tag} className="text-sm text-blue-600 hover:underline cursor-pointer">
+              #{tag}
+            </span>
+          ))}
+        </div>
+
+        {/* Time */}
+        <div className="text-xs text-gray-500 uppercase">{timeAgo}</div>
+      </div>
+    </div>
+  );
+};
+
+export default InstagramPost;
