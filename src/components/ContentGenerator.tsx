@@ -1,0 +1,287 @@
+import React, { useState, useEffect } from "react";
+import {
+  Sparkles,
+  Instagram,
+  Play,
+  FileVideo,
+  Loader2,
+  CheckCircle,
+} from "lucide-react";
+import { Trend, GeneratedContent } from "../types";
+import { contentService } from "../services/contentService";
+
+const ContentGenerator: React.FC = () => {
+  const [trends, setTrends] = useState<Trend[]>([]);
+  const [selectedTrend, setSelectedTrend] = useState<string>("");
+  const [contentType, setContentType] = useState<string>("instagram-carousel");
+  const [generating, setGenerating] = useState(false);
+  const [generatedContent, setGeneratedContent] =
+    useState<GeneratedContent | null>(null);
+
+  useEffect(() => {
+    loadTrends();
+  }, []);
+
+  const loadTrends = async () => {
+    try {
+      const data = await contentService.getTrends();
+      setTrends(data);
+      if (data.length > 0) setSelectedTrend(data[0].id);
+    } catch (error) {
+      console.error("Failed to load trends:", error);
+    }
+  };
+
+  const handleGenerate = async () => {
+    if (!selectedTrend) return;
+
+    setGenerating(true);
+    setGeneratedContent(null);
+
+    try {
+      const content = await contentService.generateContent(
+        selectedTrend,
+        contentType
+      );
+      setGeneratedContent(content);
+    } catch (error) {
+      console.error("Generation failed:", error);
+    } finally {
+      setGenerating(false);
+    }
+  };
+
+  const contentTypes = [
+    { id: "instagram-carousel", name: "Instagram Carousel", icon: Instagram },
+    { id: "reel", name: "Reel Caption", icon: Play },
+    { id: "video-script", name: "Video Script", icon: FileVideo },
+  ];
+
+  const selectedTrendData = trends.find((t) => t.id === selectedTrend);
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+        <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2 mb-2">
+          <Sparkles className="w-7 h-7 text-purple-600" />
+          Content Generator
+        </h2>
+        <p className="text-gray-600">
+          Transform trending topics into engaging, science-backed content for
+          Gen Z
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Input Panel */}
+        <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200 space-y-6">
+          <div>
+            <label className="block text-sm font-semibold text-gray-900 mb-3">
+              Select Trend
+            </label>
+            <select
+              value={selectedTrend}
+              onChange={(e) => setSelectedTrend(e.target.value)}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-beiersdorf-blue focus:border-transparent"
+            >
+              {trends.map((trend) => (
+                <option key={trend.id} value={trend.id}>
+                  {trend.name} (Score: {trend.score})
+                </option>
+              ))}
+            </select>
+
+            {selectedTrendData && (
+              <div className="mt-3 p-4 bg-gray-50 rounded-lg">
+                <p className="text-sm text-gray-700">
+                  {selectedTrendData.description}
+                </p>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {selectedTrendData.keywords.slice(0, 4).map((keyword) => (
+                    <span
+                      key={keyword}
+                      className="text-xs px-2 py-1 bg-white rounded-md text-gray-600"
+                    >
+                      #{keyword}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-900 mb-3">
+              Content Type
+            </label>
+            <div className="space-y-2">
+              {contentTypes.map((type) => (
+                <button
+                  key={type.id}
+                  onClick={() => setContentType(type.id)}
+                  className={`w-full flex items-center gap-3 p-4 rounded-lg border-2 transition ${
+                    contentType === type.id
+                      ? "border-beiersdorf-blue bg-beiersdorf-light"
+                      : "border-gray-200 hover:border-gray-300"
+                  }`}
+                >
+                  <type.icon className="w-5 h-5" />
+                  <span className="font-medium">{type.name}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <button
+            onClick={handleGenerate}
+            disabled={generating || !selectedTrend}
+            className="w-full py-4 bg-gradient-to-r from-purple-600 to-beiersdorf-blue text-white rounded-lg hover:from-purple-700 hover:to-beiersdorf-navy transition font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          >
+            {generating ? (
+              <>
+                <Loader2 className="w-5 h-5 animate-spin" />
+                Generating Content...
+              </>
+            ) : (
+              <>
+                <Sparkles className="w-5 h-5" />
+                Generate Content
+              </>
+            )}
+          </button>
+        </div>
+
+        {/* Output Panel */}
+        <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+          {!generatedContent && !generating && (
+            <div className="flex flex-col items-center justify-center h-full text-center text-gray-400">
+              <Sparkles className="w-16 h-16 mb-4 opacity-20" />
+              <p>Select a trend and content type, then click Generate</p>
+            </div>
+          )}
+
+          {generating && (
+            <div className="flex flex-col items-center justify-center h-full">
+              <Loader2 className="w-12 h-12 animate-spin text-beiersdorf-blue mb-4" />
+              <p className="text-gray-600">AI is crafting your content...</p>
+              <p className="text-sm text-gray-500 mt-2">
+                This may take a few seconds
+              </p>
+            </div>
+          )}
+
+          {generatedContent && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-bold text-gray-900">
+                  Generated Content
+                </h3>
+                <div className="flex items-center gap-2 px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm">
+                  <CheckCircle className="w-4 h-4" />
+                  {Math.round(generatedContent.confidence * 100)}% Confidence
+                </div>
+              </div>
+
+              {generatedContent.slides && (
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-3">
+                    Carousel Slides
+                  </h4>
+                  <div className="space-y-3">
+                    {generatedContent.slides.map((slide) => (
+                      <div
+                        key={slide.number}
+                        className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-lg p-4 border border-purple-200"
+                      >
+                        <div className="text-xs font-bold text-purple-600 mb-2">
+                          SLIDE {slide.number}
+                        </div>
+                        <p className="text-gray-900 font-medium mb-2">
+                          {slide.text}
+                        </p>
+                        <p className="text-sm text-gray-600 italic">
+                          💡 {slide.visualHint}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {generatedContent.caption && (
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-2">Caption</h4>
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <p className="text-gray-900">{generatedContent.caption}</p>
+                  </div>
+                </div>
+              )}
+
+              {generatedContent.hashtags && (
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-2">Hashtags</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {generatedContent.hashtags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-3 py-1 bg-beiersdorf-light text-beiersdorf-blue rounded-full text-sm"
+                      >
+                        #{tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {generatedContent.script && (
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-2">
+                    Video Script
+                  </h4>
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <pre className="text-sm text-gray-900 whitespace-pre-wrap font-sans">
+                      {generatedContent.script}
+                    </pre>
+                  </div>
+                </div>
+              )}
+
+              {generatedContent.visualSuggestions && (
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-2">
+                    Visual Suggestions
+                  </h4>
+                  <ul className="space-y-2">
+                    {generatedContent.visualSuggestions.map(
+                      (suggestion, idx) => (
+                        <li
+                          key={idx}
+                          className="flex items-start gap-2 text-sm text-gray-700"
+                        >
+                          <span className="text-purple-600">•</span>
+                          {suggestion}
+                        </li>
+                      )
+                    )}
+                  </ul>
+                </div>
+              )}
+
+              <div className="pt-4 border-t border-gray-200">
+                <p className="text-xs text-gray-500 mb-2">
+                  📚 R&D References: {generatedContent.rdReferences.join(", ")}
+                </p>
+                <button className="w-full py-3 bg-beiersdorf-blue text-white rounded-lg hover:bg-beiersdorf-navy transition font-medium">
+                  Send to Review Queue
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ContentGenerator;
