@@ -141,19 +141,52 @@ const ReviewQueue: React.FC = () => {
         {/* Filters */}
         <div className="flex gap-2 mt-4">
           {(["all", "pending", "approved", "rejected"] as const).map(
-            (filterOption) => (
-              <button
-                key={filterOption}
-                onClick={() => setFilter(filterOption)}
-                className={`px-4 py-2 rounded-lg font-medium transition capitalize ${
-                  filter === filterOption
-                    ? "bg-beiersdorf-blue text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}
-              >
-                {filterOption}
-              </button>
-            )
+            (filterOption) => {
+              // Define button styling based on filter type
+              let activeStyle = "";
+              let inactiveStyle = "";
+              let icon = null;
+
+              switch (filterOption) {
+                case "rejected":
+                  activeStyle = "bg-red-600 text-white shadow-md";
+                  inactiveStyle =
+                    "bg-red-50 text-red-700 border-2 border-red-300 hover:bg-red-100";
+                  icon = <XCircle className="w-4 h-4" />;
+                  break;
+                case "approved":
+                  activeStyle = "bg-green-600 text-white shadow-md";
+                  inactiveStyle =
+                    "bg-green-50 text-green-700 border-2 border-green-300 hover:bg-green-100";
+                  icon = <CheckCircle className="w-4 h-4" />;
+                  break;
+                case "pending":
+                  activeStyle = "bg-yellow-600 text-white shadow-md";
+                  inactiveStyle =
+                    "bg-yellow-50 text-yellow-700 border-2 border-yellow-300 hover:bg-yellow-100";
+                  icon = <Clock className="w-4 h-4" />;
+                  break;
+                case "all":
+                  activeStyle = "bg-beiersdorf-blue text-white shadow-md";
+                  inactiveStyle =
+                    "bg-gray-100 text-gray-700 border-2 border-gray-300 hover:bg-gray-200";
+                  icon = <Eye className="w-4 h-4" />;
+                  break;
+              }
+
+              return (
+                <button
+                  key={filterOption}
+                  onClick={() => setFilter(filterOption)}
+                  className={`px-4 py-2 rounded-lg font-medium transition capitalize flex items-center gap-2 ${
+                    filter === filterOption ? activeStyle : inactiveStyle
+                  }`}
+                >
+                  {icon}
+                  {filterOption}
+                </button>
+              );
+            }
           )}
         </div>
       </div>
