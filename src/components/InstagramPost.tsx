@@ -69,12 +69,15 @@ const InstagramPost: React.FC<InstagramPostProps> = ({
                 className="w-full h-full rounded-full"
               />
             ) : (
-              <span className="text-white font-bold text-sm">B</span>
-            )}
+              <span className="text-white font-black text-xl tracking-tight">B</span>            )}
           </div>
-          <div>
-            <p className="font-semibold text-sm">{username}</p>
-            <p className="text-xs text-gray-500">B.SkinWise</p>
+          <div className="flex items-baseline gap-0.5">
+            <span className="font-black text-beiersdorf-blue text-lg tracking-tight">
+              B
+            </span>
+            <span className="font-light text-gray-700 text-base">
+              .SkinWise
+            </span>
           </div>
         </div>
         <button className="text-gray-600 hover:text-gray-900">
