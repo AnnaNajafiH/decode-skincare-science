@@ -404,7 +404,7 @@ const ContentGenerator: React.FC<ContentGeneratorProps> = ({
               timeAgo="Just now"
               product={{
                 name: "Bioderma Sensibio H2O",
-                url: "https://www.bioderma.com/en/our-products",
+                url: "https://www.nivea.de/produkte/q10-anti-falten-extra-reichhaltig-tagespflege--lsf-15-50ml-lsf-15-50ml-40060000851280001.html",
                 image: "/assets/brand/bioderma-sensibio.jpg",
                 sku: "SENS-H2O",
               }}

@@ -74,7 +74,7 @@ const InstagramPost: React.FC<InstagramPostProps> = ({
           </div>
           <div>
             <p className="font-semibold text-sm">{username}</p>
-            <p className="text-xs text-gray-500">Science-backed skincare</p>
+            <p className="text-xs text-gray-500">B.SkinWise</p>
           </div>
         </div>
         <button className="text-gray-600 hover:text-gray-900">
@@ -170,9 +170,8 @@ const InstagramPost: React.FC<InstagramPostProps> = ({
             href={product.url}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={(e) => e.stopPropagation()}
-            aria-label={`View product ${product.name} on Bioderma`}
-            className="absolute left-3 bottom-3 bg-white/95 backdrop-blur-sm rounded-full px-3 py-2 flex items-center gap-2 shadow-md hover:scale-105 transform transition"
+            aria-label={`View product ${product.name}`}
+            className="absolute left-3 bottom-3 bg-white/95 backdrop-blur-sm rounded-full px-3 py-2 flex items-center gap-2 shadow-md hover:scale-105 transform transition z-20 cursor-pointer"
           >
             <span className="text-sm font-medium text-beiersdorf-blue">
               View product
