@@ -389,7 +389,7 @@ const ContentGenerator: React.FC<ContentGeneratorProps> = ({
               ✕ Close Preview
             </button>
             <InstagramPost
-              username="@beiersdorf_official"
+              username="@beiersdorf"
               slides={generatedContent.slides.map((slide) => ({
                 text: slide.text,
                 visualHint: slide.visualHint,
@@ -398,6 +398,12 @@ const ContentGenerator: React.FC<ContentGeneratorProps> = ({
               hashtags={generatedContent.hashtags || []}
               likes={2847}
               timeAgo="Just now"
+              product={{
+                name: "Bioderma Sensibio H2O",
+                url: "",
+                image: "/assets/brand/bioderma-sensibio.jpg",
+                sku: "SENS-H2O",
+              }}
             />
           </div>
         </div>
