@@ -43,7 +43,7 @@ const InstagramPost: React.FC<InstagramPostProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-lg border border-gray-200 max-w-md mx-auto m-6 overflow-hidden">
+    <div className="bg-white rounded-xl shadow-lg border border-gray-200 w-full sm:max-w-md mx-auto m-4 sm:m-6 overflow-hidden">
       {/* Instagram Header */}
       <div className="flex items-center justify-between p-3 border-b border-gray-200">
         <div className="flex items-center gap-3">
@@ -163,7 +163,7 @@ const InstagramPost: React.FC<InstagramPostProps> = ({
           {hashtags.map((tag) => (
             <span
               key={tag}
-              className="text-sm text-blue-600 hover:underline cursor-pointer"
+              className="text-sm text-beiersdorf-blue hover:underline cursor-pointer"
             >
               #{tag}
             </span>

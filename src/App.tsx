@@ -8,6 +8,7 @@ import {
   Menu,
   X,
 } from "lucide-react";
+import Logo from "./components/Logo";
 import TrendDashboard from "./components/TrendDashboard";
 import ContentGenerator from "./components/ContentGenerator";
 import ReviewQueue from "./components/ReviewQueue";
@@ -92,19 +93,7 @@ function App() {
       <header className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-beiersdorf-blue to-beiersdorf-accent rounded-lg flex items-center justify-center">
-                <Sparkles className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <h1 className="text-xl font-bold text-gray-900">
-                  Science Content Ecosystem
-                </h1>
-                <p className="text-xs text-gray-500">
-                  Beiersdorf AI-Powered Platform
-                </p>
-              </div>
-            </div>
+            <Logo />
 
             {/* Mobile menu button */}
             <button

@@ -5,7 +5,7 @@ export default {
     extend: {
       colors: {
         beiersdorf: {
-          blue: "#0051A5",
+          blue: "#0032A3",
           navy: "#001E50",
           light: "#E5F2FF",
           accent: "#00A3E0",
