@@ -146,7 +146,7 @@ const TrendDashboard: React.FC<TrendDashboardProps> = ({ onCreatePost }) => {
               {new Date(trend.detectedAt).toLocaleDateString()}
             </div>
 
-            <div className="flex flex-wrap gap-2 mb-3">
+            <div className="flex flex-wrap gap-2 mb-4 min-h-[28px]">
               {trend.keywords.slice(0, 3).map((keyword) => (
                 <span
                   key={keyword}
@@ -158,17 +158,17 @@ const TrendDashboard: React.FC<TrendDashboardProps> = ({ onCreatePost }) => {
               ))}
             </div>
 
-            <div className="pt-3 border-t border-gray-200 flex items-center justify-between">
-              <span className="text-xs text-gray-500">
+            <div className="pt-3 border-t border-gray-200 space-y-2">
+              <span className="text-xs text-gray-500 block">
                 {trend.relatedPosts.length} related posts
               </span>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 flex-wrap">
                 {/* Determine urgency: hot velocity or very high score */}
                 {(() => {
                   const isHot = trend.velocity === "hot" || trend.score >= 85;
                   const baseBtn = isHot
-                    ? "text-xs text-white px-3 py-1 rounded-md font-bold shadow-lg transform-gpu hover:scale-105 transition"
-                    : "text-xs bg-beiersdorf-blue text-white px-3 py-1 rounded-md font-medium hover:bg-beiersdorf-navy transition";
+                    ? "text-xs text-white px-2.5 py-1 rounded-md font-bold shadow-lg transform-gpu hover:scale-105 transition whitespace-nowrap"
+                    : "text-xs bg-beiersdorf-blue text-white px-2.5 py-1 rounded-md font-medium hover:bg-beiersdorf-navy transition whitespace-nowrap";
                   const hotBg = isHot
                     ? "bg-gradient-to-r from-red-600 to-orange-500 pulse-glow-hot"
                     : "bg-beiersdorf-blue";
@@ -187,7 +187,7 @@ const TrendDashboard: React.FC<TrendDashboardProps> = ({ onCreatePost }) => {
                         }
                       >
                         {isHot ? (
-                          <span className="flex items-center gap-2">
+                          <span className="flex items-center gap-1.5">
                             <span>Act Now</span>
                           </span>
                         ) : (
@@ -196,7 +196,7 @@ const TrendDashboard: React.FC<TrendDashboardProps> = ({ onCreatePost }) => {
                       </button>
 
                       {isHot && (
-                        <span className="urgent-badge bg-red-50 text-red-700">
+                        <span className="urgent-badge bg-red-50 text-red-700 whitespace-nowrap px-2 py-1 text-xs rounded">
                           🔥 High priority
                         </span>
                       )}
@@ -206,7 +206,7 @@ const TrendDashboard: React.FC<TrendDashboardProps> = ({ onCreatePost }) => {
                           e.stopPropagation();
                           setSelectedTrend(trend);
                         }}
-                        className="text-xs text-beiersdorf-blue font-medium hover:underline flex items-center gap-1"
+                        className="text-xs text-beiersdorf-blue font-medium hover:underline flex items-center gap-1 whitespace-nowrap"
                       >
                         <Eye className="w-3 h-3" />
                         View Details
