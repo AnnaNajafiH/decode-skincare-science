@@ -89,7 +89,7 @@ const InstagramPost: React.FC<InstagramPostProps> = ({
           <img
             src={backgroundImage}
             alt="background"
-            className="absolute inset-0 w-full h-full object-cover blur-md scale-105 z-0"
+            className="absolute inset-0 w-full h-full object-cover blur-sm scale-105 z-0"
           />
         )}
 
@@ -102,7 +102,7 @@ const InstagramPost: React.FC<InstagramPostProps> = ({
 
         {/* Watermark */}
         {backgroundImage && (
-          <div className="absolute top-3 left-3 z-20 bg-white/80 rounded px-2 py-1">
+          <div className="absolute top-1 left-1 z-20 rounded px-2 py-1">
             <span className="text-sm font-semibold text-beiersdorf-blue">
               B.SkinWise
             </span>

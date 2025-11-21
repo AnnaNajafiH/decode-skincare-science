@@ -12,7 +12,7 @@ import { Trend, GeneratedContent } from "../types";
 import { contentService } from "../services/contentService";
 import InstagramPost from "./InstagramPost";
 import Confetti from "./Confetti";
-import herHackathonImg from "../assets/images/herhackathon.png";
+import herHackathonImg from "../assets/images/herhackathon2.png";
 
 // Debug: log the imported image
 console.log("ContentGenerator herHackathonImg:", herHackathonImg);
