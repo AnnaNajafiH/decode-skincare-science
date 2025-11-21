@@ -12,6 +12,10 @@ import { Trend, GeneratedContent } from "../types";
 import { contentService } from "../services/contentService";
 import InstagramPost from "./InstagramPost";
 import Confetti from "./Confetti";
+import herHackathonImg from "../assets/images/herhackathon.png";
+
+// Debug: log the imported image
+console.log("ContentGenerator herHackathonImg:", herHackathonImg);
 
 type ContentGeneratorProps = {
   preselectedTrendId?: string;
@@ -400,10 +404,11 @@ const ContentGenerator: React.FC<ContentGeneratorProps> = ({
               timeAgo="Just now"
               product={{
                 name: "Bioderma Sensibio H2O",
-                url: "",
+                url: "https://www.bioderma.com/en/our-products",
                 image: "/assets/brand/bioderma-sensibio.jpg",
                 sku: "SENS-H2O",
               }}
+              backgroundImage={herHackathonImg}
             />
           </div>
         </div>

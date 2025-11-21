@@ -27,6 +27,7 @@ interface InstagramPostProps {
     image?: string;
     sku?: string;
   } | null;
+  backgroundImage?: string | null;
 }
 
 const InstagramPost: React.FC<InstagramPostProps> = ({
@@ -38,10 +39,14 @@ const InstagramPost: React.FC<InstagramPostProps> = ({
   likes = 0,
   timeAgo = "2m",
   product = null,
+  backgroundImage = null,
 }) => {
   const [currentSlide, setCurrentSlide] = React.useState(0);
   const [liked, setLiked] = React.useState(false);
   const [saved, setSaved] = React.useState(false);
+
+  // Debug: log the background image value
+  console.log("Instagram Post backgroundImage:", backgroundImage);
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
@@ -78,14 +83,47 @@ const InstagramPost: React.FC<InstagramPostProps> = ({
       </div>
 
       {/* Carousel */}
-      <div className="relative bg-gradient-to-br from-purple-100 via-blue-100 to-pink-100 aspect-square">
+      <div className="relative aspect-square overflow-hidden">
+        {/* Background image (blurred) */}
+        {backgroundImage && (
+          <img
+            src={backgroundImage}
+            alt="background"
+            className="absolute inset-0 w-full h-full object-cover blur-md scale-105 z-0"
+          />
+        )}
+
+        {/* Overlay for readability */}
+        {backgroundImage ? (
+          <div className="absolute inset-0 bg-black/30 z-[1]" />
+        ) : (
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-100 via-blue-100 to-pink-100 z-0" />
+        )}
+
+        {/* Watermark */}
+        {backgroundImage && (
+          <div className="absolute top-3 left-3 z-20 bg-white/80 rounded px-2 py-1">
+            <span className="text-sm font-semibold text-beiersdorf-blue">
+              B.SkinWise
+            </span>
+          </div>
+        )}
+
         {/* Slide Content */}
-        <div className="absolute inset-0 flex items-center justify-center p-8">
-          <div className="text-center space-y-4">
-            <div className="text-3xl font-bold text-gray-900 leading-tight">
+        <div className="absolute inset-0 flex items-center justify-center p-8 z-10">
+          <div className="text-center space-y-4 px-2">
+            <div
+              className={`text-3xl font-bold leading-tight ${
+                backgroundImage ? "text-white drop-shadow-md" : "text-gray-900"
+              }`}
+            >
               {slides[currentSlide]?.text}
             </div>
-            <div className="text-sm text-gray-600 italic">
+            <div
+              className={`text-sm italic ${
+                backgroundImage ? "text-white/90" : "text-gray-600"
+              }`}
+            >
               💡 {slides[currentSlide]?.visualHint}
             </div>
           </div>
@@ -96,13 +134,13 @@ const InstagramPost: React.FC<InstagramPostProps> = ({
           <>
             <button
               onClick={prevSlide}
-              className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 hover:bg-white rounded-full flex items-center justify-center shadow-md"
+              className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-md z-20 text-gray-700 font-bold text-xl"
             >
               ‹
             </button>
             <button
               onClick={nextSlide}
-              className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 hover:bg-white rounded-full flex items-center justify-center shadow-md"
+              className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-md z-20 text-gray-700 font-bold text-xl"
             >
               ›
             </button>
@@ -110,7 +148,7 @@ const InstagramPost: React.FC<InstagramPostProps> = ({
         )}
 
         {/* Slide Indicators */}
-        <div className="absolute top-2 left-0 right-0 flex justify-center gap-1">
+        <div className="absolute top-2 left-0 right-0 flex justify-center gap-1 z-20">
           {slides.map((_, idx) => (
             <div
               key={idx}
@@ -122,7 +160,7 @@ const InstagramPost: React.FC<InstagramPostProps> = ({
         </div>
 
         {/* Slide Counter */}
-        <div className="absolute bottom-2 right-2 px-2 py-1 bg-black/50 text-white text-xs rounded-full">
+        <div className="absolute bottom-2 right-2 px-2 py-1 bg-black/50 text-white text-xs rounded-full z-20">
           {currentSlide + 1}/{slides.length}
         </div>
 
