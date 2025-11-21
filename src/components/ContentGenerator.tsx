@@ -167,7 +167,7 @@ const ContentGenerator: React.FC<ContentGeneratorProps> = ({
           <button
             onClick={handleGenerate}
             disabled={generating || !selectedTrend}
-            className="w-full py-4 bg-gradient-to-r from-purple-600 to-beiersdorf-blue text-white rounded-lg hover:from-purple-700 hover:to-beiersdorf-navy transition font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full py-4 bg-gradient-to-r from-purple-600 via-beiersdorf-blue to-blue-600 text-white rounded-lg hover:from-purple-700 hover:via-beiersdorf-navy hover:to-blue-700 transition font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
           >
             {generating ? (
               <>
@@ -306,7 +306,7 @@ const ContentGenerator: React.FC<ContentGeneratorProps> = ({
                 <div className="flex gap-3">
                   <button
                     onClick={() => setShowPreview(true)}
-                    className="flex-1 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-medium flex items-center justify-center gap-2"
+                    className="flex-1 py-3 bg-beiersdorf-blue text-white rounded-lg hover:bg-beiersdorf-navy transition font-medium flex items-center justify-center gap-2"
                   >
                     <Eye className="w-5 h-5" />
                     Preview as Instagram Post

@@ -235,7 +235,7 @@ const InternalBriefGenerator: React.FC = () => {
             <button
               onClick={handleGenerate}
               disabled={generating || !selectedDoc}
-              className="w-full py-4 bg-gradient-to-r from-orange-600 to-beiersdorf-blue text-white rounded-lg hover:from-orange-700 hover:to-beiersdorf-navy transition font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="w-full py-4 bg-gradient-to-r from-purple-600 via-beiersdorf-blue to-blue-600 text-white rounded-lg hover:from-purple-700 hover:via-beiersdorf-navy hover:to-blue-700 transition font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
             >
               {generating ? (
                 <>
@@ -331,14 +331,14 @@ const InternalBriefGenerator: React.FC = () => {
                 <div className="flex justify-end gap-3">
                   <button
                     onClick={() => setEmailModalOpen(false)}
-                    className="px-4 py-2 rounded-lg bg-gray-100"
+                    className="px-4 py-2 rounded-lg border-2 border-beiersdorf-blue bg-white text-beiersdorf-blue hover:bg-beiersdorf-light transition"
                   >
                     Cancel
                   </button>
                   <button
                     onClick={handleSendEmail}
                     disabled={emailSending}
-                    className="px-4 py-2 rounded-lg bg-beiersdorf-blue text-white flex items-center gap-2"
+                    className="px-4 py-2 rounded-lg bg-beiersdorf-blue text-white hover:bg-beiersdorf-navy transition flex items-center gap-2"
                   >
                     {emailSending ? (
                       <>
@@ -376,7 +376,7 @@ const InternalBriefGenerator: React.FC = () => {
                 <div className="relative flex items-center gap-3">
                   <button
                     onClick={handleExportBrief}
-                    className="px-4 py-2 bg-gray-100 text-gray-900 rounded-lg hover:bg-gray-200 transition flex items-center gap-2 text-sm"
+                    className="px-4 py-2 border-2 border-beiersdorf-blue bg-white text-beiersdorf-blue rounded-lg hover:bg-beiersdorf-light transition flex items-center gap-2 text-sm"
                   >
                     <Download className="w-4 h-4" />
                     Export
@@ -557,7 +557,7 @@ const InternalBriefGenerator: React.FC = () => {
                   <div className="relative flex-1">
                     <button
                       onClick={() => setShareMenuOpen((s) => !s)}
-                      className="w-full py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition font-medium flex items-center justify-center gap-2"
+                      className="w-full py-3 border-2 border-beiersdorf-blue bg-white text-beiersdorf-blue rounded-lg hover:bg-beiersdorf-light transition font-medium flex items-center justify-center gap-2"
                     >
                       <Mail className="w-4 h-4" />
                       Share
@@ -622,7 +622,7 @@ const InternalBriefGenerator: React.FC = () => {
                       </div>
                     )}
                   </div>
-                  <button className="flex-1 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition font-medium">
+                  <button className="flex-1 py-3 border-2 border-beiersdorf-blue bg-white text-beiersdorf-blue rounded-lg hover:bg-beiersdorf-light transition font-medium">
                     Copy to Clipboard
                   </button>
                 </div>

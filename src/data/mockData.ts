@@ -305,6 +305,69 @@ export const mockGeneratedContent: GeneratedContent[] = [
     ],
     rdReferences: ["rd3"],
   },
+  {
+    id: "gc4",
+    trendId: "t1",
+    type: "instagram-carousel",
+    status: "rejected",
+    confidence: 0.68,
+    generatedAt: "2025-11-19T14:20:00Z",
+    slides: [
+      {
+        number: 1,
+        text: "🚨 This serum will SHOCK you!",
+        visualHint: "Clickbait-style text with emoji overload",
+      },
+      {
+        number: 2,
+        text: "Removes wrinkles INSTANTLY! 100% guaranteed!",
+        visualHint: "Exaggerated before/after comparison",
+      },
+      {
+        number: 3,
+        text: "Doctors HATE this one simple trick!!!",
+        visualHint: "Dramatic text with multiple exclamation marks",
+      },
+    ],
+    caption:
+      "OMG you won't believe what this does to your skin!!! 😱😱😱 Click link in bio NOW!!!",
+    hashtags: [
+      "MiracleCure",
+      "InstantResults",
+      "AntiAgingSecret",
+      "SkincareHack",
+    ],
+    visualSuggestions: [
+      "Use bright red and yellow colors for urgency",
+      "Add flashing elements and countdown timers",
+    ],
+    rdReferences: ["rd1"],
+    reviewerNotes:
+      "REJECTED: Content uses misleading claims and sensationalist language not supported by clinical data. Violates brand guidelines for scientific accuracy and trustworthiness. Claims like 'instant results' and '100% guaranteed' are unsubstantiated and could mislead consumers. Tone does not align with Beiersdorf's professional, evidence-based approach.",
+    editedBy: "reviewer@beiersdorf.com",
+  },
+  {
+    id: "gc5",
+    trendId: "t2",
+    type: "reel",
+    status: "rejected",
+    confidence: 0.71,
+    generatedAt: "2025-11-18T16:45:00Z",
+    caption:
+      "This ingredient is literally MAGIC ✨🪄 No science needed, just trust us! #SkincareWizardry",
+    hashtags: ["Magic", "NoScience", "JustBelieve", "Miracle"],
+    script:
+      'Hook (0-3s): "Forget science, this is pure magic!" [Mystical sparkles]\n\nBody (4-12s): "Who needs studies when you have results like these?" [Vague claims without data]\n\nCTA (13-15s): "Buy now before it disappears!" [Urgency without substance]',
+    visualSuggestions: [
+      "Add magical effects and sparkles throughout",
+      "Use mystical music and fantasy elements",
+      "Avoid showing any scientific references",
+    ],
+    rdReferences: [],
+    reviewerNotes:
+      "REJECTED: Content completely contradicts our science-first brand positioning. Uses 'magic' framing that undermines credibility. No R&D references provided. Creates false urgency. This approach is antithetical to Beiersdorf's commitment to transparent, evidence-based skincare education.",
+    editedBy: "senior.reviewer@beiersdorf.com",
+  },
 ];
 
 // Mock Internal Briefs

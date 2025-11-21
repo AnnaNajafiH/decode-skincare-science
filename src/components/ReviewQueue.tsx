@@ -13,9 +13,9 @@ const ReviewQueue: React.FC = () => {
   const [reviewNotes, setReviewNotes] = useState("");
   const [showConfetti, setShowConfetti] = useState(false);
   const [approvedMessage, setApprovedMessage] = useState<string | null>(null);
-  const [filter, setFilter] = useState<"all" | "pending" | "approved">(
-    "pending"
-  );
+  const [filter, setFilter] = useState<
+    "all" | "pending" | "approved" | "rejected"
+  >("pending");
 
   useEffect(() => {
     loadContent();
@@ -140,19 +140,21 @@ const ReviewQueue: React.FC = () => {
 
         {/* Filters */}
         <div className="flex gap-2 mt-4">
-          {(["all", "pending", "approved"] as const).map((filterOption) => (
-            <button
-              key={filterOption}
-              onClick={() => setFilter(filterOption)}
-              className={`px-4 py-2 rounded-lg font-medium transition capitalize ${
-                filter === filterOption
-                  ? "bg-beiersdorf-blue text-white"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-              }`}
-            >
-              {filterOption}
-            </button>
-          ))}
+          {(["all", "pending", "approved", "rejected"] as const).map(
+            (filterOption) => (
+              <button
+                key={filterOption}
+                onClick={() => setFilter(filterOption)}
+                className={`px-4 py-2 rounded-lg font-medium transition capitalize ${
+                  filter === filterOption
+                    ? "bg-beiersdorf-blue text-white"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                }`}
+              >
+                {filterOption}
+              </button>
+            )
+          )}
         </div>
       </div>
 
@@ -161,17 +163,23 @@ const ReviewQueue: React.FC = () => {
         {filteredContents.map((content) => (
           <div
             key={content.id}
-            className="bg-white rounded-xl shadow-sm p-6 border border-gray-200 hover:shadow-md transition"
+            className={`rounded-xl shadow-sm p-6 border-2 hover:shadow-md transition ${
+              content.status === "rejected"
+                ? "bg-red-50 border-red-300 opacity-75"
+                : "bg-white border-gray-200"
+            }`}
           >
             <div className="flex items-start justify-between mb-4">
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-2">
                   <span
-                    className={`px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(
+                    className={`px-3 py-1 rounded-full text-xs font-semibold border-2 ${getStatusColor(
                       content.status
-                    )}`}
+                    )} ${content.status === "rejected" ? "animate-pulse" : ""}`}
                   >
-                    {content.status.toUpperCase()}
+                    {content.status === "rejected"
+                      ? "❌ REJECTED"
+                      : content.status.toUpperCase()}
                   </span>
                   <span className="text-sm text-gray-500 capitalize">
                     {content.type.replace("-", " ")}
@@ -184,23 +192,33 @@ const ReviewQueue: React.FC = () => {
                 <div className="flex items-center gap-2 mt-2">
                   <Shield
                     className={`w-5 h-5 ${
-                      content.confidence > 0.8
+                      content.status === "rejected"
+                        ? "text-red-500"
+                        : content.confidence > 0.8
                         ? "text-green-500"
                         : "text-yellow-500"
                     }`}
                   />
-                  <span className="text-sm font-medium">
+                  <span
+                    className={`text-sm font-medium ${
+                      content.status === "rejected" ? "text-red-700" : ""
+                    }`}
+                  >
                     Confidence: {Math.round(content.confidence * 100)}%
                   </span>
                 </div>
               </div>
-              <button
+              {/* <button
                 onClick={() => handleViewDetails(content)}
-                className="px-4 py-2 bg-beiersdorf-blue text-white rounded-lg hover:bg-beiersdorf-navy transition flex items-center gap-2"
+                className={`px-4 py-2 rounded-lg transition flex items-center gap-2 ${
+                  content.status === "rejected"
+                    ? "bg-red-600 text-white hover:bg-red-700"
+                    : "bg-beiersdorf-blue text-white hover:bg-beiersdorf-navy"
+                }`}
               >
                 <Eye className="w-4 h-4" />
-                Review
-              </button>
+                {content.status === "rejected" ? "View Rejection" : "Review"}
+              </button> */}
             </div>
 
             {content.caption && (
@@ -216,9 +234,19 @@ const ReviewQueue: React.FC = () => {
                 {content.slides.slice(0, 3).map((slide) => (
                   <div
                     key={slide.number}
-                    className="flex-shrink-0 w-40 bg-gradient-to-br from-purple-50 to-blue-50 rounded-lg p-3 border border-purple-200"
+                    className={`flex-shrink-0 w-40 rounded-lg p-3 border ${
+                      content.status === "rejected"
+                        ? "bg-red-100 border-red-300"
+                        : "bg-gradient-to-br from-purple-50 to-blue-50 border-purple-200"
+                    }`}
                   >
-                    <div className="text-xs font-bold text-purple-600 mb-1">
+                    <div
+                      className={`text-xs font-bold mb-1 ${
+                        content.status === "rejected"
+                          ? "text-red-700"
+                          : "text-purple-600"
+                      }`}
+                    >
                       Slide {slide.number}
                     </div>
                     <p className="text-xs text-gray-700 line-clamp-2">
@@ -236,11 +264,26 @@ const ReviewQueue: React.FC = () => {
               </div>
             )}
 
+            {content.status === "rejected" && content.reviewerNotes && (
+              <div className="mt-3 p-3 bg-red-100 border border-red-300 rounded-lg">
+                <p className="text-xs font-semibold text-red-900 mb-1">
+                  Rejection Reason:
+                </p>
+                <p className="text-xs text-red-800 line-clamp-2">
+                  {content.reviewerNotes}
+                </p>
+              </div>
+            )}
+
             <div className="flex gap-2 mt-3">
               {content.hashtags?.slice(0, 4).map((tag) => (
                 <span
                   key={tag}
-                  className="text-xs px-2 py-1 bg-beiersdorf-light text-beiersdorf-blue rounded-full"
+                  className={`text-xs px-2 py-1 rounded-full ${
+                    content.status === "rejected"
+                      ? "bg-red-100 text-red-700 line-through"
+                      : "bg-beiersdorf-light text-beiersdorf-blue"
+                  }`}
                 >
                   #{tag}
                 </span>
@@ -274,11 +317,13 @@ const ReviewQueue: React.FC = () => {
                 </h3>
                 <div className="flex items-center gap-3">
                   <span
-                    className={`px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(
+                    className={`px-3 py-1 rounded-full text-xs font-semibold border-2 ${getStatusColor(
                       selectedContent.status
                     )}`}
                   >
-                    {selectedContent.status.toUpperCase()}
+                    {selectedContent.status === "rejected"
+                      ? "❌ REJECTED"
+                      : selectedContent.status.toUpperCase()}
                   </span>
                   <span className="text-sm text-gray-500 capitalize">
                     {selectedContent.type.replace("-", " ")}
@@ -292,6 +337,25 @@ const ReviewQueue: React.FC = () => {
                 ✕
               </button>
             </div>
+
+            {/* Rejection Reason - Show prominently if rejected */}
+            {selectedContent.status === "rejected" &&
+              selectedContent.reviewerNotes && (
+                <div className="bg-red-50 border-2 border-red-300 rounded-xl p-6 mb-6">
+                  <h4 className="font-bold text-red-900 mb-3 flex items-center gap-2 text-lg">
+                    <XCircle className="w-6 h-6 text-red-600" />
+                    Rejection Reason
+                  </h4>
+                  <p className="text-red-800 leading-relaxed">
+                    {selectedContent.reviewerNotes}
+                  </p>
+                  {selectedContent.editedBy && (
+                    <p className="text-sm text-red-600 mt-3">
+                      Reviewed by: {selectedContent.editedBy}
+                    </p>
+                  )}
+                </div>
+              )}
 
             {/* Trust Score */}
             {trustScore ? (
@@ -431,7 +495,7 @@ const ReviewQueue: React.FC = () => {
                   <XCircle className="w-5 h-5" />
                   Reject
                 </button>
-                <button className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition font-semibold flex items-center gap-2">
+                <button className="px-6 py-3 border-2 border-beiersdorf-blue bg-white text-beiersdorf-blue rounded-lg hover:bg-beiersdorf-light transition font-semibold flex items-center gap-2">
                   <Edit3 className="w-5 h-5" />
                   Edit
                 </button>
