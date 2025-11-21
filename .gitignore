@@ -37,4 +37,7 @@ lerna-debug.log*
 
 # OS
 Thumbs.db
+.env
+backend/__pycache__
+backend/venv
 
