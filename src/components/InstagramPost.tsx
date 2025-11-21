@@ -5,6 +5,7 @@ import {
   Send,
   Bookmark,
   MoreHorizontal,
+  ShoppingBag,
 } from "lucide-react";
 
 interface InstagramPostProps {
@@ -19,6 +20,13 @@ interface InstagramPostProps {
   hashtags: string[];
   likes?: number;
   timeAgo?: string;
+  // Optional product that the post can link to (shopping)
+  product?: {
+    name: string;
+    url: string;
+    image?: string;
+    sku?: string;
+  } | null;
 }
 
 const InstagramPost: React.FC<InstagramPostProps> = ({
@@ -29,6 +37,7 @@ const InstagramPost: React.FC<InstagramPostProps> = ({
   hashtags,
   likes = 0,
   timeAgo = "2m",
+  product = null,
 }) => {
   const [currentSlide, setCurrentSlide] = React.useState(0);
   const [liked, setLiked] = React.useState(false);
@@ -116,6 +125,23 @@ const InstagramPost: React.FC<InstagramPostProps> = ({
         <div className="absolute bottom-2 right-2 px-2 py-1 bg-black/50 text-white text-xs rounded-full">
           {currentSlide + 1}/{slides.length}
         </div>
+
+        {/* Product overlay button on the image */}
+        {product && (
+          <a
+            href={product.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            aria-label={`View product ${product.name} on Bioderma`}
+            className="absolute left-3 bottom-3 bg-white/95 backdrop-blur-sm rounded-full px-3 py-2 flex items-center gap-2 shadow-md hover:scale-105 transform transition"
+          >
+            <span className="text-sm font-medium text-beiersdorf-blue">
+              View product
+            </span>
+            <ShoppingBag className="w-4 h-4 text-beiersdorf-blue" />
+          </a>
+        )}
       </div>
 
       {/* Instagram Actions */}
@@ -173,6 +199,8 @@ const InstagramPost: React.FC<InstagramPostProps> = ({
         {/* Time */}
         <div className="text-xs text-gray-500 uppercase">{timeAgo}</div>
       </div>
+
+      {/* product card removed: shopping overlay on image now handles product linking */}
     </div>
   );
 };
