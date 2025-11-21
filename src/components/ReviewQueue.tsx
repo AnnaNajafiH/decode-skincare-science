@@ -81,11 +81,11 @@ const ReviewQueue: React.FC = () => {
     }
   };
 
-  const handleViewDetails = (content: GeneratedContent) => {
+  const handleViewDetails = React.useCallback((content: GeneratedContent) => {
     setSelectedContent(content);
     setTrustScore(null);
     loadTrustScore(content.id);
-  };
+  }, []);
 
   const filteredContents = contents.filter(
     (content) => filter === "all" || content.status === filter
