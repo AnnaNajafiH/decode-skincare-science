@@ -322,6 +322,16 @@ class ContentEcosystemService {
     return newBrief;
   }
 
+  // Mock email sending for briefs
+  async sendBriefByEmail(
+    briefId: string,
+    recipients: string[]
+  ): Promise<{ ok: boolean }> {
+    await delay(900);
+    console.log(`Mock send brief ${briefId} to:`, recipients);
+    return { ok: true };
+  }
+
   async getInternalBriefs(): Promise<InternalBrief[]> {
     await delay(500);
     return mockInternalBriefs;
