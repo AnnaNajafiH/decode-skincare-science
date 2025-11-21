@@ -168,13 +168,17 @@ const InstagramPost: React.FC<InstagramPostProps> = ({
         </div>
 
         {/* Product overlay button on the image */}
-        {product && (
+        {product && product.url && (
           <a
             href={product.url}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={(e) => {
+              e.stopPropagation();
+              console.log("Product link clicked:", product.url);
+            }}
             aria-label={`View product ${product.name}`}
-            className="absolute left-3 bottom-3 bg-white/95 backdrop-blur-sm rounded-full px-3 py-2 flex items-center gap-2 shadow-md hover:scale-105 transform transition z-20 cursor-pointer"
+            className="absolute left-3 bottom-3 bg-white/95 backdrop-blur-sm rounded-full px-3 py-2 flex items-center gap-2 shadow-md hover:scale-105 transform transition z-30 cursor-pointer"
           >
             <span className="text-sm font-medium text-beiersdorf-blue">
               View product
