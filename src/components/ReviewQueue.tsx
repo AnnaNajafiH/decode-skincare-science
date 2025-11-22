@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { CheckCircle, XCircle, Edit3, Eye, Clock, Shield } from "lucide-react";
 import Confetti from "./Confetti";
-import { GeneratedContent, TrustScore } from "../types";
+import { GeneratedContent } from "../types";
 import { contentService } from "../services/contentService";
 
 const ReviewQueue: React.FC = () => {
@@ -9,7 +9,6 @@ const ReviewQueue: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [selectedContent, setSelectedContent] =
     useState<GeneratedContent | null>(null);
-  const [trustScore, setTrustScore] = useState<TrustScore | null>(null);
   const [reviewNotes, setReviewNotes] = useState("");
   const [showConfetti, setShowConfetti] = useState(false);
   const [approvedMessage, setApprovedMessage] = useState<string | null>(null);
@@ -30,15 +29,6 @@ const ReviewQueue: React.FC = () => {
       console.error("Failed to load content:", error);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const loadTrustScore = async (contentId: string) => {
-    try {
-      const score = await contentService.getTrustScore(contentId);
-      setTrustScore(score);
-    } catch (error) {
-      console.error("Failed to load trust score:", error);
     }
   };
 
@@ -80,12 +70,6 @@ const ReviewQueue: React.FC = () => {
       console.error("Failed to reject content:", error);
     }
   };
-
-  const handleViewDetails = React.useCallback((content: GeneratedContent) => {
-    setSelectedContent(content);
-    setTrustScore(null);
-    loadTrustScore(content.id);
-  }, []);
 
   const filteredContents = contents.filter(
     (content) => filter === "all" || content.status === filter
@@ -390,8 +374,8 @@ const ReviewQueue: React.FC = () => {
                 </div>
               )}
 
-            {/* Trust Score */}
-            {trustScore ? (
+            {/* Trust Score - Temporarily disabled */}
+            {/* {trustScore ? (
               <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 mb-6 border border-blue-200">
                 <h4 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
                   <Shield className="w-5 h-5 text-blue-600" />
@@ -441,7 +425,7 @@ const ReviewQueue: React.FC = () => {
                   Loading trust score...
                 </span>
               </div>
-            )}
+            )} */}
 
             {/* Content Details */}
             <div className="space-y-4 mb-6">
