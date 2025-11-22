@@ -3,26 +3,30 @@
 ## Technologies Used
 
 ### Core Technologies
-| Technology | Purpose | Why We Used It |
-|------------|---------|----------------|
-| **React 18** | Frontend framework | Component-based UI, reusable code, efficient rendering |
-| **TypeScript** | Type safety | Catch errors early, better IDE support |
-| **Vite** | Build tool | Fast development, quick hot reload |
-| **TailwindCSS** | Styling | Rapid UI development, responsive design |
-| **jsPDF** | PDF export | Create downloadable campaign briefs |
-| **lucide-react** | Icons | Consistent icon library |
+
+| Technology       | Purpose            | Why We Used It                                         |
+| ---------------- | ------------------ | ------------------------------------------------------ |
+| **React 18**     | Frontend framework | Component-based UI, reusable code, efficient rendering |
+| **TypeScript**   | Type safety        | Catch errors early, better IDE support                 |
+| **Vite**         | Build tool         | Fast development, quick hot reload                     |
+| **TailwindCSS**  | Styling            | Rapid UI development, responsive design                |
+| **jsPDF**        | PDF export         | Create downloadable campaign briefs                    |
+| **lucide-react** | Icons              | Consistent icon library                                |
 
 ---
 
 ## Key Features & How They're Built
 
 ### 1. PDF Export (Campaign Briefs)
+
 **Technology:** jsPDF library
 
 **How it works:**
+
 ```bash
 npm install jspdf
 ```
+
 - Created utility file: `src/utils/pdfGenerator.ts`
 - Generates formatted PDF with brand colors
 - Auto page breaks and text wrapping
@@ -33,12 +37,15 @@ npm install jspdf
 ---
 
 ### 2. Hashtag Formatting
+
 **Technology:** JavaScript regex
 
 **How it works:**
+
 ```typescript
 #{keyword.replace(/\s+/g, '')}
 ```
+
 - Removes all spaces from keywords
 - "glass skin" → "#glassskin"
 - Applied in all components that display hashtags
@@ -48,12 +55,15 @@ npm install jspdf
 ---
 
 ### 3. Confetti Celebration
-**Technologies:** 
+
+**Technologies:**
+
 - DOM manipulation (JavaScript)
 - CSS animations
 - HTML5 Audio API
 
 **How it works:**
+
 - Custom component creates 80 colored pieces
 - CSS keyframes animate falling motion
 - Plays applause sound on success
@@ -63,13 +73,16 @@ npm install jspdf
 ---
 
 ### 4. Mobile Responsive Design
+
 **Technology:** TailwindCSS responsive utilities
 
 **How it works:**
+
 ```typescript
-className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-className="text-xl sm:text-2xl"
+className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3";
+className = "text-xl sm:text-2xl";
 ```
+
 - Mobile: 1 column, smaller text
 - Tablet: 2 columns, medium text
 - Desktop: 3 columns, larger text
@@ -79,9 +92,11 @@ className="text-xl sm:text-2xl"
 ---
 
 ### 5. State Management
+
 **Technology:** React Hooks
 
 **Hooks used:**
+
 - `useState` - Component state
 - `useEffect` - Data fetching
 - `useCallback` - Memoized functions
@@ -91,14 +106,17 @@ className="text-xl sm:text-2xl"
 ---
 
 ### 6. Data Architecture
+
 **Pattern:** Service Layer
 
 **Structure:**
+
 ```
 Components → contentService → Data
 ```
 
 **Service methods:**
+
 - `getTrends()` - Fetch trends
 - `generateContent()` - Create posts
 - `generateBrief()` - Create campaign briefs
@@ -168,14 +186,14 @@ A: Generated content goes to review queue with "pending" status. Reviewers can a
 
 ## Technical Decisions Summary
 
-| Choice | Reason |
-|--------|--------|
-| React + TypeScript | Industry standard, type safety |
-| Vite | Fast development, modern tooling |
-| TailwindCSS | Rapid styling, responsive utilities |
-| jsPDF | Client-side PDF, no server cost |
-| Service Layer | Clean architecture, API-ready |
-| Custom Confetti | Lightweight, no dependencies |
+| Choice             | Reason                              |
+| ------------------ | ----------------------------------- |
+| React + TypeScript | Industry standard, type safety      |
+| Vite               | Fast development, modern tooling    |
+| TailwindCSS        | Rapid styling, responsive utilities |
+| jsPDF              | Client-side PDF, no server cost     |
+| Service Layer      | Clean architecture, API-ready       |
+| Custom Confetti    | Lightweight, no dependencies        |
 
 ---
 
