@@ -69,20 +69,20 @@ const TrendDashboard: React.FC<TrendDashboardProps> = ({ onCreatePost }) => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
-        <div className="flex items-center justify-between mb-4">
+      <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6 border border-gray-200">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-              <TrendingUp className="w-7 h-7 text-beiersdorf-blue" />
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-2">
+              <TrendingUp className="w-6 h-6 sm:w-7 sm:h-7 text-beiersdorf-blue" />
               Trend Detection Dashboard
             </h2>
-            <p className="text-gray-600 mt-1">
+            <p className="text-sm sm:text-base text-gray-600 mt-1">
               Real-time social media trend analysis for skincare science
             </p>
           </div>
           <button
             onClick={loadTrends}
-            className="px-4 py-2 bg-beiersdorf-blue text-white rounded-lg hover:bg-beiersdorf-navy transition flex items-center gap-2"
+            className="px-4 py-2 bg-beiersdorf-blue text-white rounded-lg hover:bg-beiersdorf-navy transition flex items-center justify-center gap-2 text-sm sm:text-base whitespace-nowrap self-start sm:self-auto"
           >
             <Clock className="w-4 h-4" />
             Refresh
@@ -90,12 +90,12 @@ const TrendDashboard: React.FC<TrendDashboardProps> = ({ onCreatePost }) => {
         </div>
 
         {/* Filters */}
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           {(["all", "hot", "rising"] as const).map((filterOption) => (
             <button
               key={filterOption}
               onClick={() => setFilter(filterOption)}
-              className={`px-4 py-2 rounded-lg font-medium transition ${
+              className={`px-4 py-2 rounded-lg font-medium transition text-sm sm:text-base ${
                 filter === filterOption
                   ? "bg-beiersdorf-blue text-white"
                   : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -108,12 +108,12 @@ const TrendDashboard: React.FC<TrendDashboardProps> = ({ onCreatePost }) => {
       </div>
 
       {/* Trends Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {filteredTrends.map((trend) => (
           <div
             key={trend.id}
             onClick={() => setSelectedTrend(trend)}
-            className="bg-white rounded-xl shadow-sm p-6 border border-gray-200 hover:shadow-lg transition cursor-pointer"
+            className="bg-white rounded-xl shadow-sm p-4 sm:p-6 border border-gray-200 hover:shadow-lg transition cursor-pointer"
           >
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center gap-2">
@@ -163,9 +163,9 @@ const TrendDashboard: React.FC<TrendDashboardProps> = ({ onCreatePost }) => {
                 {trend.relatedPosts.length} related posts
               </span>
               <div className="flex items-center gap-2 flex-wrap">
-                {/* Determine urgency: hot velocity or very high score */}
+                {/* Determine urgency: only hot velocity gets urgent treatment */}
                 {(() => {
-                  const isHot = trend.velocity === "hot" || trend.score >= 85;
+                  const isHot = trend.velocity === "hot";
                   const baseBtn = isHot
                     ? "text-xs text-white px-2.5 py-1 rounded-md font-bold shadow-lg transform-gpu hover:scale-105 transition whitespace-nowrap"
                     : "text-xs bg-beiersdorf-blue text-white px-2.5 py-1 rounded-md font-medium hover:bg-beiersdorf-navy transition whitespace-nowrap";
@@ -227,42 +227,46 @@ const TrendDashboard: React.FC<TrendDashboardProps> = ({ onCreatePost }) => {
           onClick={() => setSelectedTrend(null)}
         >
           <div
-            className="bg-white rounded-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto p-8"
+            className="bg-white rounded-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto p-4 sm:p-6 md:p-8"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-start justify-between mb-6">
-              <div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">
+            <div className="flex items-start justify-between gap-4 mb-4 sm:mb-6">
+              <div className="flex-1 min-w-0">
+                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
                   {selectedTrend.name}
                 </h3>
-                <p className="text-gray-600">{selectedTrend.description}</p>
+                <p className="text-sm sm:text-base text-gray-600">
+                  {selectedTrend.description}
+                </p>
               </div>
               <button
                 onClick={() => setSelectedTrend(null)}
-                className="text-gray-400 hover:text-gray-600"
+                className="text-gray-400 hover:text-gray-600 text-2xl flex-shrink-0"
               >
                 ✕
               </button>
             </div>
 
-            <div className="grid grid-cols-3 gap-4 mb-6">
-              <div className="bg-beiersdorf-light rounded-lg p-4">
-                <div className="text-3xl font-bold text-beiersdorf-blue">
+            <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-6">
+              <div className="bg-beiersdorf-light rounded-lg p-3 sm:p-4">
+                <div className="text-2xl sm:text-3xl font-bold text-beiersdorf-blue">
                   {selectedTrend.score}
                 </div>
-                <div className="text-sm text-gray-600">Trend Score</div>
+                <div className="text-xs sm:text-sm text-gray-600">
+                  Trend Score
+                </div>
               </div>
-              <div className="bg-gray-50 rounded-lg p-4">
-                <div className="text-lg font-bold text-gray-900 capitalize">
+              <div className="bg-gray-50 rounded-lg p-3 sm:p-4">
+                <div className="text-base sm:text-lg font-bold text-gray-900 capitalize">
                   {selectedTrend.velocity}
                 </div>
-                <div className="text-sm text-gray-600">Velocity</div>
+                <div className="text-xs sm:text-sm text-gray-600">Velocity</div>
               </div>
-              <div className="bg-gray-50 rounded-lg p-4">
-                <div className="text-lg font-bold text-gray-900">
+              <div className="bg-gray-50 rounded-lg p-3 sm:p-4">
+                <div className="text-base sm:text-lg font-bold text-gray-900">
                   {selectedTrend.relatedPosts.length}
                 </div>
-                <div className="text-sm text-gray-600">Posts</div>
+                <div className="text-xs sm:text-sm text-gray-600">Posts</div>
               </div>
             </div>
 
