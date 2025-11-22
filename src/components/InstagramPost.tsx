@@ -69,7 +69,10 @@ const InstagramPost: React.FC<InstagramPostProps> = ({
                 className="w-full h-full rounded-full"
               />
             ) : (
-              <span className="text-white font-black text-xl tracking-tight">B</span>            )}
+              <span className="text-white font-black text-xl tracking-tight">
+                B
+              </span>
+            )}
           </div>
           <div className="flex items-baseline gap-0.5">
             <span className="font-black text-beiersdorf-blue text-lg tracking-tight">
@@ -231,7 +234,7 @@ const InstagramPost: React.FC<InstagramPostProps> = ({
               key={tag}
               className="text-sm text-beiersdorf-blue hover:underline cursor-pointer"
             >
-              #{tag}
+              #{tag.replace(/\s+/g, "")}
             </span>
           ))}
         </div>

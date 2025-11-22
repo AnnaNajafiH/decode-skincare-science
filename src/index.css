@@ -124,7 +124,7 @@ body {
 /* Confetti pieces */
 @keyframes confetti-fall {
   to {
-    transform: translateY(110vh) rotate(720deg);
+    transform: translateY(130vh) rotate(720deg);
     opacity: 0;
   }
 }

@@ -70,9 +70,9 @@ const ContentGenerator: React.FC<ContentGeneratorProps> = ({
         contentType
       );
       setGeneratedContent(content);
-      // small celebration when generation finishes
+      // Exciting celebration when generation finishes
       setShowConfetti(true);
-      setTimeout(() => setShowConfetti(false), 1600);
+      setTimeout(() => setShowConfetti(false), 3000);
     } catch (error) {
       console.error("Generation failed:", error);
     } finally {
@@ -91,7 +91,7 @@ const ContentGenerator: React.FC<ContentGeneratorProps> = ({
   return (
     <div className="space-y-6">
       {/* Celebration confetti */}
-      {showConfetti && <Confetti />}
+      {showConfetti && <Confetti count={80} durationMs={3000} />}
       {/* Header */}
       <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
         <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2 mb-2">
@@ -134,7 +134,7 @@ const ContentGenerator: React.FC<ContentGeneratorProps> = ({
                       key={keyword}
                       className="text-xs px-2 py-1 bg-white rounded-md text-gray-600"
                     >
-                      #{keyword}
+                      #{keyword.replace(/\s+/g, "")}
                     </span>
                   ))}
                 </div>
@@ -258,7 +258,7 @@ const ContentGenerator: React.FC<ContentGeneratorProps> = ({
                         key={tag}
                         className="px-3 py-1 bg-beiersdorf-light text-beiersdorf-blue rounded-full text-sm"
                       >
-                        #{tag}
+                        #{tag.replace(/\s+/g, "")}
                       </span>
                     ))}
                   </div>

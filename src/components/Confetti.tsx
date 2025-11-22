@@ -6,6 +6,13 @@ const Confetti: React.FC<{ count?: number; durationMs?: number }> = ({
   durationMs = 1800,
 }) => {
   useEffect(() => {
+    // Play celebration sound - crowd cheering and applause
+    const audio = new Audio('https://opengameart.org/sites/default/files/Audience%20Applause-SoundBible.com-304513609.mp3');
+    audio.volume = 0.5;
+    audio.play().catch(() => {
+      // Ignore if audio play fails (e.g., browser policy)
+    });
+
     const root = document.createElement("div");
     root.className = "confetti-root pointer-events-none fixed inset-0 z-[9999]";
     document.body.appendChild(root);

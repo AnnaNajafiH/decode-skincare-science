@@ -318,7 +318,7 @@ const ReviewQueue: React.FC = () => {
                       : "bg-beiersdorf-light text-beiersdorf-blue"
                   }`}
                 >
-                  #{tag}
+                  #{tag.replace(/\s+/g, "")}
                 </span>
               ))}
             </div>
@@ -489,7 +489,7 @@ const ReviewQueue: React.FC = () => {
                         key={tag}
                         className="px-3 py-1 bg-beiersdorf-light text-beiersdorf-blue rounded-full text-sm"
                       >
-                        #{tag}
+                        #{tag.replace(/\s+/g, "")}
                       </span>
                     ))}
                   </div>

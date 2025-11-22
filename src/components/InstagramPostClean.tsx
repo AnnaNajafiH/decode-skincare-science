@@ -201,7 +201,7 @@ const InstagramPostClean: React.FC<InstagramPostProps> = ({
               key={tag}
               className="text-sm text-beiersdorf-blue hover:underline cursor-pointer"
             >
-              #{tag}
+              #{tag.replace(/\s+/g, "")}
             </span>
           ))}
         </div>

@@ -153,7 +153,7 @@ const TrendDashboard: React.FC<TrendDashboardProps> = ({ onCreatePost }) => {
                   className="flex items-center gap-1 px-2 py-1 bg-gray-100 rounded-md text-xs"
                 >
                   <Hash className="w-3 h-3" />
-                  {keyword}
+                  {keyword.replace(/\s+/g, "")}
                 </span>
               ))}
             </div>
@@ -278,7 +278,7 @@ const TrendDashboard: React.FC<TrendDashboardProps> = ({ onCreatePost }) => {
                     key={keyword}
                     className="px-3 py-1 bg-beiersdorf-light text-beiersdorf-blue rounded-full text-sm"
                   >
-                    #{keyword}
+                    #{keyword.replace(/\s+/g, "")}
                   </span>
                 ))}
               </div>

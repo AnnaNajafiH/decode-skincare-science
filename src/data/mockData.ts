@@ -48,10 +48,32 @@ export const mockSocialPosts: SocialPost[] = [
     comments: 67,
     hashtags: ["Retinol", "AntiAging", "Skincare"],
   },
+  {
+    id: "sp5",
+    text: "PSA: SPF is NOT just for summer! ☀️ Wearing sunscreen daily changed my skin game. UV damage happens year-round 🙌 #SPFDaily #Sunscreen #SkinProtection",
+    author: "@skincarescience",
+    platform: "instagram",
+    timestamp: "2025-11-21T11:30:00Z",
+    likes: 28900,
+    comments: 1240,
+    hashtags: ["SPFDaily", "Sunscreen", "SkinProtection", "UVProtection"],
+  },
 ];
 
 // Mock Trends
 export const mockTrends: Trend[] = [
+  {
+    id: "t5",
+    name: "Daily SPF Protection",
+    description:
+      "Year-round sunscreen movement emphasizing UV protection as essential daily skincare, not just summer routine",
+    score: 96,
+    velocity: "hot",
+    detectedAt: "2025-11-21T12:00:00Z",
+    relatedPosts: [mockSocialPosts[4]],
+    keywords: ["SPF daily", "sunscreen", "UV protection", "skin protection", "photoaging"],
+    category: "Sun Protection",
+  },
   {
     id: "t1",
     name: "Glass Skin Hydration",
@@ -83,18 +105,6 @@ export const mockTrends: Trend[] = [
     category: "Treatment",
   },
   {
-    id: "t3",
-    name: "Slugging for Barrier",
-    description:
-      "Occlusive skincare method using petroleum jelly to lock in moisture and repair skin barrier",
-    score: 78,
-    velocity: "stable",
-    detectedAt: "2025-11-19T22:00:00Z",
-    relatedPosts: [mockSocialPosts[2]],
-    keywords: ["slugging", "skin barrier", "occlusive", "moisture"],
-    category: "Barrier Repair",
-  },
-  {
     id: "t4",
     name: "Gentle Retinol Alternatives",
     description:
@@ -105,6 +115,18 @@ export const mockTrends: Trend[] = [
     relatedPosts: [mockSocialPosts[3]],
     keywords: ["retinol alternatives", "bakuchiol", "anti-aging", "gentle"],
     category: "Anti-Aging",
+  },
+  {
+    id: "t3",
+    name: "Slugging for Barrier",
+    description:
+      "Occlusive skincare method using petroleum jelly to lock in moisture and repair skin barrier",
+    score: 78,
+    velocity: "stable",
+    detectedAt: "2025-11-19T22:00:00Z",
+    relatedPosts: [mockSocialPosts[2]],
+    keywords: ["slugging", "skin barrier", "occlusive", "moisture"],
+    category: "Barrier Repair",
   },
 ];
 
