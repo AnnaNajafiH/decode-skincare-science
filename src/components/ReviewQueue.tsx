@@ -71,6 +71,10 @@ const ReviewQueue: React.FC = () => {
     }
   };
 
+  const handleViewDetails = (content: GeneratedContent) => {
+    setSelectedContent(content);
+  };
+
   const filteredContents = contents.filter(
     (content) => filter === "all" || content.status === filter
   );
@@ -225,7 +229,7 @@ const ReviewQueue: React.FC = () => {
                   </span>
                 </div>
               </div>
-              {/* <button
+              <button
                 onClick={() => handleViewDetails(content)}
                 className={`px-4 py-2 rounded-lg transition flex items-center gap-2 ${
                   content.status === "rejected"
@@ -235,7 +239,7 @@ const ReviewQueue: React.FC = () => {
               >
                 <Eye className="w-4 h-4" />
                 {content.status === "rejected" ? "View Rejection" : "Review"}
-              </button> */}
+              </button>
             </div>
 
             {content.caption && (
@@ -374,8 +378,8 @@ const ReviewQueue: React.FC = () => {
                 </div>
               )}
 
-            {/* Trust Score - Temporarily disabled */}
-            {/* {trustScore ? (
+            {/* Trust Score - Temporarily disabled 
+            {trustScore ? (
               <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 mb-6 border border-blue-200">
                 <h4 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
                   <Shield className="w-5 h-5 text-blue-600" />
@@ -425,7 +429,7 @@ const ReviewQueue: React.FC = () => {
                   Loading trust score...
                 </span>
               </div>
-            )} */}
+            )}
 
             {/* Content Details */}
             <div className="space-y-4 mb-6">

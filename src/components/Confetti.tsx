@@ -6,9 +6,11 @@ const Confetti: React.FC<{ count?: number; durationMs?: number }> = ({
   durationMs = 1800,
 }) => {
   useEffect(() => {
-    // Play celebration sound - crowd cheering and applause
-    const audio = new Audio('https://opengameart.org/sites/default/files/Audience%20Applause-SoundBible.com-304513609.mp3');
-    audio.volume = 0.5;
+    // Play celebration sound - tada/success sound
+    const audio = new Audio(
+      "https://www.soundjay.com/misc/sounds/small-crowd-applause-1.mp3"
+    );
+    audio.volume = 0.6;
     audio.play().catch(() => {
       // Ignore if audio play fails (e.g., browser policy)
     });
