@@ -71,7 +71,14 @@ export const mockTrends: Trend[] = [
     velocity: "hot",
     detectedAt: "2025-11-21T12:00:00Z",
     relatedPosts: [mockSocialPosts[4]],
-    keywords: ["SPF daily", "sunscreen", "UV protection", "skin protection", "photoaging"],
+    keywords: [
+      "SPF daily",
+      "sunscreen",
+      "GenZ",
+      "UV protection",
+      "skin protection",
+      "photoaging",
+    ],
     category: "Sun Protection",
   },
   {
